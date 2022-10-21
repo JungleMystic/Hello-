@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal"
+    android:background="@color/background"
+    tools:context=".SignInActivity">
+    
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/app_icon"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:fontFamily="@font/app_name_font"
+        android:textColor="@color/text_color"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:layout_marginTop="10dp"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"/>
+
+    <LinearLayout
+        android:id="@+id/sign_up_LL"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signin_question"
+            android:textColor="@color/blackNwhite"
+            android:textSize="14sp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/sign_up_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up_here"
+            android:textColor="@color/button_background"
+            android:textSize="14sp"
+            android:gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sign_in_LL"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_question"
+            android:textColor="@color/blackNwhite"
+            android:textSize="14sp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:id="@+id/sign_in_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in_here"
+            android:textColor="@color/button_background"
+            android:textSize="14sp"
+            android:layout_marginTop="15dp"/>
+    </LinearLayout>
+
+</LinearLayout>

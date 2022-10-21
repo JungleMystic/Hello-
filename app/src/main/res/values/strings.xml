@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Hello!!</string>
+
+    <string name="signIn_text">Sign In</string>
+    <string name="signUp_text">Sign Up</string>
+    <string name="your_name_hint">Your Name</string>
+    <string name="mail_input_hint">Enter your Email</string>
+    <string name="password_input_hint">Enter your Password</string>
+    <string name="password_confirm_hint">Confirm your Password</string>
+    <string name="signin_question">Don\'t have an account?</string>
+    <string name="signup_question">Already have an account?</string>
+    <string name="sign_in_here">Sign In here</string>
+    <string name="sign_up_here">Sign Up here</string>
+    <string name="sample_name">Jungle Mystic</string>
+    <string name="sign_out_text">Sign Out</string>
+    <string name="signout_question">Do you want to Sign out?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="enter_your_message">Enter your message</string>
+    <string name="sent_message_hint">This is a sent message</string>
+    <string name="received_message_hint">This is a received message</string>
+
+</resources>

@@ -1,2 +1,1 @@
-# Hello!!
-Hello!! A Simple Chat app
+# Hello!!  A Simple Chat app

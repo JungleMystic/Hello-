@@ -2,6 +2,7 @@ package com.lrm.hello
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -67,16 +68,21 @@ class ChatActivity : AppCompatActivity() {
 
         binding.sendButton.setOnClickListener {
 
-            val message = binding.messageBox.text.toString()
-            val messageObject = Message(message, senderUid)
+            if(binding.messageBox.text.isNotEmpty()) {
 
-            databaseRef.child("chats").child(senderRoom!!).child("messages").push()
-                .setValue(messageObject).addOnSuccessListener {
-                    databaseRef.child("chats").child(receiverRoom!!).child("messages").push()
-                        .setValue(messageObject)
-                }
+                val message = binding.messageBox.text.toString()
+                val messageObject = Message(message, senderUid)
 
-            binding.messageBox.setText("")
+                databaseRef.child("chats").child(senderRoom!!).child("messages").push()
+                    .setValue(messageObject).addOnSuccessListener {
+                        databaseRef.child("chats").child(receiverRoom!!).child("messages").push()
+                            .setValue(messageObject)
+                    }
+
+                binding.messageBox.setText("")
+            } else {
+                Toast.makeText(this,"Empty message cannot be sent", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

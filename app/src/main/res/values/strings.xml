@@ -19,5 +19,9 @@
     <string name="enter_your_message">Enter your message</string>
     <string name="sent_message_hint">This is a sent message</string>
     <string name="received_message_hint">This is a received message</string>
+    <string name="profile">Profile</string>
+    <string name="save">Save</string>
+    <string name="sender_name">Sender Name</string>
+    <string name="message">Message</string>
 
 </resources>

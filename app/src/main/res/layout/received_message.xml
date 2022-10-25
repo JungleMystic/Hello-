@@ -19,7 +19,7 @@
         app:cardBackgroundColor="@color/received_message_background">
 
         <TextView
-            android:id="@+id/received_text_message"
+            android:id="@+id/message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/received_message_hint"

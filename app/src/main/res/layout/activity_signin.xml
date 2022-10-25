@@ -9,7 +9,7 @@
     android:layout_gravity="center"
     android:gravity="center_horizontal"
     android:background="@color/background"
-    tools:context=".SignInActivity">
+    tools:context=".Activities.SignInActivity">
     
     <ImageView
         android:layout_width="120dp"

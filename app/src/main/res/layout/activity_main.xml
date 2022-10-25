@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Activities.MainActivity"
     android:background="@color/background">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -42,19 +42,31 @@
 
             <TextView
                 android:id="@+id/appName"
-                android:layout_width="160dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="18dp"
-                android:paddingBottom="6dp"
-                android:gravity="center_vertical"
+                android:layout_marginStart="65dp"
+                android:layout_marginEnd="130dp"
                 android:text="@string/app_name"
+                android:paddingBottom="7dp"
                 android:fontFamily="@font/app_name_font"
                 android:textColor="@color/text_color"
                 android:textSize="22sp"
-                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/app_icon"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/main_my_profilePic"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintHorizontal_bias="0.10"
+                app:civ_border_width="1dp"
+                android:src="@drawable/ic_profile"
+                app:civ_circle_background_color="@color/light_grey"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sign_out_button"/>
 
             <ImageButton
                 android:id="@+id/sign_out_button"
@@ -82,6 +94,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="60dp"
-        tools:listitem="@layout/rv_item"/>
+        tools:listitem="@layout/rv_users"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

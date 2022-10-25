@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.lrm.hello.MainActivity
+import com.lrm.hello.Activities.MainActivity
 import com.lrm.hello.databinding.FragmentSignInBinding
 
 class SignInFragment : Fragment() {
@@ -33,7 +31,7 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
 
         binding.signInButton.setOnClickListener {
             performSignIn()

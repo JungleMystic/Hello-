@@ -1,4 +1,4 @@
-package com.lrm.hello
+package com.lrm.hello.Activities
 
 import android.content.Intent
 import android.os.Build
@@ -13,13 +13,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lrm.hello.Fragments.SignInFragmentDirections
 import com.lrm.hello.Fragments.SignUpFragmentDirections
+import com.lrm.hello.R
 import com.lrm.hello.databinding.ActivitySigninBinding
 
 class SignInActivity : AppCompatActivity() {
 
-    lateinit var auth: FirebaseAuth
-    lateinit var binding: ActivitySigninBinding
-
+    private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivitySigninBinding
     private lateinit var navController: NavController
 
     @RequiresApi(Build.VERSION_CODES.M)

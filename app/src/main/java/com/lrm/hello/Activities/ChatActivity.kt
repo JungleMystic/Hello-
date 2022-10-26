@@ -30,6 +30,8 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chatList: ArrayList<Chat>
     private lateinit var databaseRef: DatabaseReference
     private lateinit var user: FirebaseUser
+    private lateinit var manager: LinearLayoutManager
+
 
     var topic = ""
 
@@ -41,7 +43,9 @@ class ChatActivity : AppCompatActivity() {
         chatList = ArrayList()
 
         chatRecyclerView = binding.chatRecyclerview
-        chatRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        manager = LinearLayoutManager(this)
+        manager.stackFromEnd = true
+        chatRecyclerView.layoutManager = manager
 
         user = FirebaseAuth.getInstance().currentUser!!
 
@@ -79,7 +83,7 @@ class ChatActivity : AppCompatActivity() {
         })
 
         binding.sendButton.setOnClickListener {
-            var message: String = binding.messageBox.text.toString()
+            val message: String = binding.messageBox.text.toString()
 
             if (message.isNotEmpty()) {
                 sendMessage(user.uid, userId, message)
@@ -103,14 +107,14 @@ class ChatActivity : AppCompatActivity() {
 
     private fun sendMessage(senderId: String, receiverId: String, message: String) {
 
-        var reference: DatabaseReference? = FirebaseDatabase.getInstance().getReference()
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference()
 
-        var hashMap: HashMap<String, String> = HashMap()
+        val hashMap: HashMap<String, String> = HashMap()
         hashMap.put("senderId", senderId)
         hashMap.put("receiverId", receiverId)
         hashMap.put("message", message)
 
-        reference!!.child("chat").push().setValue(hashMap)
+        reference.child("chat").push().setValue(hashMap)
     }
 
     private fun readMessage(senderId: String, receiverId: String) {

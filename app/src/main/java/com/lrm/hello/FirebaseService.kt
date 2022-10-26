@@ -17,9 +17,6 @@ import com.google.firebase.messaging.RemoteMessage
 import com.lrm.hello.Activities.MainActivity
 import kotlin.random.Random
 
-//const val CHANNEL_ID = "notification_channel"
-//const val CHANNEL_NAME = "Hello"
-
 class FirebaseService: FirebaseMessagingService() {
 
     val CHANNEL_ID = "my_notification_channel"

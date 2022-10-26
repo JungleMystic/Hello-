@@ -66,19 +66,7 @@
                 android:src="@drawable/ic_profile"
                 app:civ_circle_background_color="@color/light_grey"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/sign_out_button"/>
-
-            <ImageButton
-                android:id="@+id/sign_out_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:src="@drawable/ic_sign_out"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:backgroundTint="@color/toolbarBackground"
-                app:tint="@color/blackNwhite" />
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

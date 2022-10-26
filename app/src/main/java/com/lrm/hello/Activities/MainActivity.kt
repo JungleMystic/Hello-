@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         FirebaseService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        /*FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {
             if (!it.isSuccessful) {
                 return@OnCompleteListener
             }
@@ -49,14 +49,8 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-         */
-
         binding.mainMyProfilePic.setOnClickListener {
             startActivity(Intent(this@MainActivity, MyProfileActivity::class.java))
-        }
-
-        binding.signOutButton.setOnClickListener {
-            showConfirmationDialog()
         }
 
         userList = ArrayList()
@@ -102,19 +96,5 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, error.message, Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    private fun showConfirmationDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.sign_out_text))
-            .setMessage(getString(R.string.signout_question))
-            .setNegativeButton(getString(R.string.no)) { _, _ -> }
-            .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                auth.signOut()
-                startActivity(Intent(this@MainActivity, SignInActivity::class.java))
-                finish()
-                Toast.makeText(this, "Signed Out...", Toast.LENGTH_SHORT).show()
-            }
-            .show()
     }
 }

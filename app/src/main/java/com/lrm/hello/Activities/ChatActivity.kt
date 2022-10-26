@@ -1,6 +1,7 @@
 package com.lrm.hello.Activities
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +13,7 @@ import com.google.firebase.database.*
 import com.google.gson.Gson
 import com.lrm.hello.Adapters.ChatAdapter
 import com.lrm.hello.Model.Chat
-import com.lrm.hello.Model.NotificationData
-import com.lrm.hello.Model.PushNotificationData
+import com.lrm.hello.Model.PushNotification
 import com.lrm.hello.Model.UserDetails
 import com.lrm.hello.R
 import com.lrm.hello.RetrofitInstance
@@ -86,9 +86,11 @@ class ChatActivity : AppCompatActivity() {
                 binding.messageBox.setText("")
 
                 topic = "/topics/$userId"
-                PushNotificationData(NotificationData(userName!!,message), topic).also {
+                /*PushNotification(NotificationData(userName!!,message), topic).also {
                     sendNotification(it)
                 }
+
+                 */
 
             } else {
                 Toast.makeText(applicationContext, "Your message is empty.", Toast.LENGTH_SHORT).show()
@@ -141,16 +143,16 @@ class ChatActivity : AppCompatActivity() {
         })
     }
 
-    private fun sendNotification(notification: PushNotificationData) = CoroutineScope(Dispatchers.IO).launch {
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val response = RetrofitInstance.api.postNotification(notification)
             if (response.isSuccessful) {
-                Toast.makeText(this@ChatActivity, "Response: ${Gson().toJson(response)}", Toast.LENGTH_SHORT).show()
+                Log.d("TAG", "Response: ${Gson().toJson(response)}")
             } else {
-                Toast.makeText(this@ChatActivity, response.errorBody().toString(), Toast.LENGTH_SHORT).show()
+                Log.e("TAG", response.errorBody()!!.string())
             }
         } catch (e: Exception) {
-            Toast.makeText(this@ChatActivity, e.message, Toast.LENGTH_SHORT).show()
+            Log.e("TAG", e.toString())
         }
     }
 }

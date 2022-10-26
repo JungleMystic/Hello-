@@ -1,6 +1,6 @@
 package com.lrm.hello.Model
 
-data class PushNotificationData (
+data class PushNotification (
     var data: NotificationData,
     var to: String
 )

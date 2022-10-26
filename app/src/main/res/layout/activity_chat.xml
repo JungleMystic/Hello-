@@ -34,6 +34,7 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="15dp"
                 android:src="@drawable/ic_back_button"
+                app:tint="@color/blackNwhite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

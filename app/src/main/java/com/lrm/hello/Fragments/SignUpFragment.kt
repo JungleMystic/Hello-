@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.lrm.hello.Activities.MainActivity
 import com.lrm.hello.databinding.FragmentSignUpBinding
 
@@ -69,19 +71,29 @@ class SignUpFragment : Fragment() {
 
     private fun addUserToDatabase(name: String, inputEmail: String) {
 
-        val hashMap: HashMap<String, String> = HashMap()
-        hashMap.put("name", name)
-        hashMap.put("inputEmail", inputEmail)
-        hashMap.put("uid", auth.currentUser?.uid!!)
-        hashMap.put("profilePic", "")
-
-        databaseRef = FirebaseDatabase.getInstance().getReference("user").child(auth.currentUser?.uid!!)
-
-        databaseRef.setValue(hashMap).addOnCompleteListener() {
-            if (it.isSuccessful) {
-                startActivity(Intent(this@SignUpFragment.requireContext(), MainActivity::class.java))
-                Toast.makeText(context, "Account has been created", Toast.LENGTH_SHORT).show()
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {
+            if (!it.isSuccessful) {
+                return@OnCompleteListener
             }
-        }
+
+            // Get new FCM registration token
+            val token = it.result
+
+            val hashMap: HashMap<String, String> = HashMap()
+            hashMap.put("name", name)
+            hashMap.put("inputEmail", inputEmail)
+            hashMap.put("uid", auth.currentUser?.uid!!)
+            hashMap.put("profilePic", "")
+            hashMap.put("fcmToken", token!!)
+
+            databaseRef = FirebaseDatabase.getInstance().getReference("user").child(auth.currentUser?.uid!!)
+
+            databaseRef.setValue(hashMap).addOnCompleteListener() {
+                if (it.isSuccessful) {
+                    startActivity(Intent(this@SignUpFragment.requireContext(), MainActivity::class.java))
+                    Toast.makeText(context, "Account has been created", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 }

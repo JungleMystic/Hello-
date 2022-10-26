@@ -1,7 +1,6 @@
 package com.lrm.hello.Activities
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,19 +9,17 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.google.gson.Gson
 import com.lrm.hello.Adapters.ChatAdapter
+import com.lrm.hello.ApiUitlities
 import com.lrm.hello.Model.Chat
 import com.lrm.hello.Model.NotificationData
 import com.lrm.hello.Model.PushNotification
 import com.lrm.hello.Model.UserDetails
 import com.lrm.hello.R
-import com.lrm.hello.RetrofitInstance
 import com.lrm.hello.ScrollToBottom
 import com.lrm.hello.databinding.ActivityChatBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Response
 
 class ChatActivity : AppCompatActivity() {
 
@@ -33,9 +30,6 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var databaseRef: DatabaseReference
     private lateinit var user: FirebaseUser
     private lateinit var manager: LinearLayoutManager
-
-
-    var topic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +56,6 @@ class ChatActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        user = FirebaseAuth.getInstance().currentUser!!
         databaseRef = FirebaseDatabase.getInstance().getReference("user").child(userId!!)
 
         databaseRef.addValueEventListener(object: ValueEventListener {
@@ -85,16 +78,12 @@ class ChatActivity : AppCompatActivity() {
         })
 
         binding.sendButton.setOnClickListener {
+
             val message: String = binding.messageBox.text.toString()
 
             if (message.isNotEmpty()) {
                 sendMessage(user.uid, userId, message)
                 binding.messageBox.setText("")
-
-                topic = "/topics/$userId"
-                PushNotification(NotificationData(userName!!,message), topic).also {
-                    sendNotification(it)
-                }
 
             } else {
                 Toast.makeText(applicationContext, "Your message is empty.", Toast.LENGTH_SHORT).show()
@@ -115,6 +104,8 @@ class ChatActivity : AppCompatActivity() {
         hashMap.put("message", message)
 
         reference.child("chat").push().setValue(hashMap)
+
+        sendNotification(message, receiverId)
     }
 
     private fun readMessage(senderId: String, receiverId: String) {
@@ -148,16 +139,36 @@ class ChatActivity : AppCompatActivity() {
         })
     }
 
-    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val response = RetrofitInstance.api.postNotification(notification)
-            if (response.isSuccessful) {
-                Log.d("TAG", "Response: ${Gson().toJson(response)}")
-            } else {
-                Log.e("TAG", response.errorBody()!!.string())
-            }
-        } catch (e: Exception) {
-            Log.e("TAG", e.toString())
-        }
+    fun sendNotification(message: String, receiverId: String) {
+        FirebaseDatabase.getInstance().getReference("user")
+            .child(receiverId).addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val data = snapshot.getValue(UserDetails::class.java)
+
+                        val notificationData = PushNotification(NotificationData("New Message", message), data!!.fcmToken)
+
+                        ApiUitlities.getInstance().sendNotification(notificationData).enqueue(
+                            object: retrofit2.Callback<PushNotification> {
+                                override fun onResponse(
+                                    call: Call<PushNotification>,
+                                    response: Response<PushNotification>
+                                ) {
+                                    Toast.makeText(this@ChatActivity, "Notification sent", Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun onFailure(call: Call<PushNotification>, t: Throwable) {
+                                    Toast.makeText(this@ChatActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                                }
+
+                            })
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
     }
 }

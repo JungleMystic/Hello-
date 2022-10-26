@@ -1,7 +1,6 @@
 package com.lrm.hello.Activities
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -9,14 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.lrm.hello.*
 import com.lrm.hello.Adapters.NameListAdapter
 import com.lrm.hello.Model.UserDetails
@@ -40,16 +37,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        FirebaseService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {
-            if (!it.isSuccessful) {
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            FirebaseService.token = it.result
-
-        })
 
         binding.mainMyProfilePic.setOnClickListener {
             startActivity(Intent(this@MainActivity, MyProfileActivity::class.java))
@@ -71,9 +58,6 @@ class MainActivity : AppCompatActivity() {
 
         databaseRef = FirebaseDatabase.getInstance().getReference("user")
         databaseRef2 = FirebaseDatabase.getInstance().getReference("user").child(user.uid)
-
-
-        FirebaseMessaging.getInstance().subscribeToTopic("/topics/${user.uid}")
 
         databaseRef.addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")

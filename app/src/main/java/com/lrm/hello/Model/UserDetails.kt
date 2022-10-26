@@ -4,5 +4,6 @@ data class UserDetails(
     var name: String = "",
     var email: String = "",
     var uid: String = "",
-    var profilePic: String = ""
+    var profilePic: String = "",
+    var fcmToken: String = ""
 )

@@ -13,10 +13,12 @@ import com.google.firebase.database.*
 import com.google.gson.Gson
 import com.lrm.hello.Adapters.ChatAdapter
 import com.lrm.hello.Model.Chat
+import com.lrm.hello.Model.NotificationData
 import com.lrm.hello.Model.PushNotification
 import com.lrm.hello.Model.UserDetails
 import com.lrm.hello.R
 import com.lrm.hello.RetrofitInstance
+import com.lrm.hello.ScrollToBottom
 import com.lrm.hello.databinding.ActivityChatBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -90,11 +92,9 @@ class ChatActivity : AppCompatActivity() {
                 binding.messageBox.setText("")
 
                 topic = "/topics/$userId"
-                /*PushNotification(NotificationData(userName!!,message), topic).also {
+                PushNotification(NotificationData(userName!!,message), topic).also {
                     sendNotification(it)
                 }
-
-                 */
 
             } else {
                 Toast.makeText(applicationContext, "Your message is empty.", Toast.LENGTH_SHORT).show()
@@ -138,6 +138,7 @@ class ChatActivity : AppCompatActivity() {
 
                 chatAdapter = ChatAdapter(this@ChatActivity, chatList)
                 chatRecyclerView.adapter = chatAdapter
+                chatAdapter.registerAdapterDataObserver(ScrollToBottom(chatRecyclerView, chatAdapter, manager))
             }
 
             override fun onCancelled(error: DatabaseError) {

@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userList: ArrayList<UserDetails>
     private lateinit var adapter: NameListAdapter
     private lateinit var databaseRef: DatabaseReference
+    private lateinit var databaseRef2: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +70,8 @@ class MainActivity : AppCompatActivity() {
         user = FirebaseAuth.getInstance().currentUser!!
 
         databaseRef = FirebaseDatabase.getInstance().getReference("user")
+        databaseRef2 = FirebaseDatabase.getInstance().getReference("user").child(user.uid)
+
 
         FirebaseMessaging.getInstance().subscribeToTopic("/topics/${user.uid}")
 
@@ -77,15 +80,6 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 userList.clear()
-
-                val currentUser = snapshot.getValue(UserDetails::class.java)
-
-                if (currentUser!!.profilePic == "") {
-                    binding.mainMyProfilePic.setImageResource(R.drawable.profile_icon)
-                } else {
-                    Glide.with(this@MainActivity).load(currentUser.profilePic)
-                        .into(binding.mainMyProfilePic)
-                }
 
                 for (postSnapshot in snapshot.children) {
                     val users = postSnapshot.getValue(UserDetails::class.java)
@@ -100,6 +94,24 @@ class MainActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(applicationContext, error.message, Toast.LENGTH_SHORT).show()
             }
+        })
+
+        databaseRef2.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val currentUser = snapshot.getValue(UserDetails::class.java)
+
+                if (currentUser!!.profilePic == "") {
+                    binding.mainMyProfilePic.setImageResource(R.drawable.profile_icon)
+                } else {
+                    Glide.with(this@MainActivity).load(currentUser.profilePic)
+                        .into(binding.mainMyProfilePic)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, error.message, Toast.LENGTH_SHORT).show()
+            }
+
         })
     }
 

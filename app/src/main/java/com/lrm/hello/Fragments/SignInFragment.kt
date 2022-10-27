@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.lrm.hello.Activities.MainActivity
 import com.lrm.hello.databinding.FragmentSignInBinding
 
 class SignInFragment : Fragment() {
 
-    lateinit var auth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
+    private lateinit var databaseRef: DatabaseReference
 
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
@@ -42,10 +47,30 @@ class SignInFragment : Fragment() {
         val inputEmail = binding.emailET.text.toString()
         val inputPassword = binding.passwordET.text.toString()
 
+
+
         if(inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
             auth.signInWithEmailAndPassword(inputEmail, inputPassword)
                 .addOnCompleteListener { task ->
                     if(task.isSuccessful) {
+
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {
+                            if (!it.isSuccessful) {
+                                return@OnCompleteListener
+                            }
+
+                            // Get new FCM registration token
+                            val token = it.result
+
+                            val hashMap: HashMap<String, String> = HashMap()
+                            hashMap.put("fcmToken", token!!)
+
+                            databaseRef = FirebaseDatabase.getInstance().getReference("user").child(auth.currentUser?.uid!!)
+
+                            databaseRef.updateChildren(hashMap as Map<String, Any>)
+
+                        })
+
                         val intent = Intent(this@SignInFragment.requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         Toast.makeText(context, "Signed in Successfully...", Toast.LENGTH_SHORT).show()

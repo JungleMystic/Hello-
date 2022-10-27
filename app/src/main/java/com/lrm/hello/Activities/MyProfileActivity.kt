@@ -3,7 +3,6 @@ package com.lrm.hello.Activities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -56,8 +55,6 @@ class MyProfileActivity : AppCompatActivity() {
                 val currentUser = snapshot.getValue(UserDetails::class.java)
 
                 binding.profileName.setText(currentUser!!.name)
-
-                Log.d("CheckData", "onDataChanged: ${snapshot.toString()}")
 
                 if (currentUser.profilePic == "") {
                     binding.myProfilePic.setImageResource(R.drawable.profile_icon)

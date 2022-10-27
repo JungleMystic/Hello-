@@ -62,7 +62,7 @@ class ChatActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(UserDetails::class.java)
 
-                binding.profileName.text = user!!.name
+                binding.chatProfileName.text = user!!.name
 
                 if (user.profilePic == "") {
                     binding.chatUserProfilePic.setImageResource(R.drawable.profile_icon)
@@ -154,7 +154,6 @@ class ChatActivity : AppCompatActivity() {
                                     call: Call<PushNotification>,
                                     response: Response<PushNotification>
                                 ) {
-                                    Toast.makeText(this@ChatActivity, "Notification sent", Toast.LENGTH_SHORT).show()
                                 }
 
                                 override fun onFailure(call: Call<PushNotification>, t: Throwable) {

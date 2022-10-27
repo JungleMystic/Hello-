@@ -54,7 +54,7 @@
                 app:layout_constraintStart_toEndOf="@id/back_button"/>
 
             <TextView
-                android:id="@+id/profileName"
+                android:id="@+id/chatProfileName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="110dp"

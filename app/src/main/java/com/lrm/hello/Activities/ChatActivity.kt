@@ -48,8 +48,8 @@ class ChatActivity : AppCompatActivity() {
         databaseRef = FirebaseDatabase.getInstance().getReference()
 
         val intent = getIntent()
-        val userName = intent.getStringExtra("name")
-        val userProfilePic = intent.getStringExtra("profilePic")
+        //val userName = intent.getStringExtra("name")
+        //val userProfilePic = intent.getStringExtra("profilePic")
         val userId = intent.getStringExtra("uid")
 
         binding.backButton.setOnClickListener {
@@ -120,8 +120,8 @@ class ChatActivity : AppCompatActivity() {
 
                     val chat = dataSnapshot.getValue(Chat::class.java)
 
-                    if (chat!!.senderId.equals(senderId) && chat!!.receiverId.equals(receiverId) ||
-                        chat!!.senderId.equals(receiverId) && chat!!.receiverId.equals(senderId)
+                    if (chat!!.senderId.equals(senderId) && chat.receiverId.equals(receiverId) ||
+                        chat.senderId.equals(receiverId) && chat.receiverId.equals(senderId)
                     ) {
                         chatList.add(chat)
                     }
@@ -140,13 +140,31 @@ class ChatActivity : AppCompatActivity() {
     }
 
     fun sendNotification(message: String, receiverId: String) {
+
+        var senderName: String = ""
+
+        FirebaseDatabase.getInstance().getReference("user").child(user.uid)
+            .addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val senderUser = snapshot.getValue(UserDetails::class.java)
+                        senderName = senderUser!!.name
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+
         FirebaseDatabase.getInstance().getReference("user")
             .child(receiverId).addListenerForSingleValueEvent(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         val data = snapshot.getValue(UserDetails::class.java)
 
-                        val notificationData = PushNotification(NotificationData("New Message", message), data!!.fcmToken)
+                        val notificationData = PushNotification(NotificationData(senderName, message), data!!.fcmToken)
 
                         ApiUitlities.getInstance().sendNotification(notificationData).enqueue(
                             object: retrofit2.Callback<PushNotification> {

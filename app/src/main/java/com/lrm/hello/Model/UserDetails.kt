@@ -5,5 +5,7 @@ data class UserDetails(
     var email: String = "",
     var uid: String = "",
     var profilePic: String = "",
-    var fcmToken: String = ""
+    var fcmToken: String = "",
+    var typingStatus: String = "",
+    var onlineStatus: String = ""
 )

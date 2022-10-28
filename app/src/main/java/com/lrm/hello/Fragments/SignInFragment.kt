@@ -47,8 +47,6 @@ class SignInFragment : Fragment() {
         val inputEmail = binding.emailET.text.toString()
         val inputPassword = binding.passwordET.text.toString()
 
-
-
         if(inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
             auth.signInWithEmailAndPassword(inputEmail, inputPassword)
                 .addOnCompleteListener { task ->

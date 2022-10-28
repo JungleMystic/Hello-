@@ -118,7 +118,14 @@ class MyProfileActivity : AppCompatActivity() {
             .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 auth.signOut()
-                startActivity(Intent(this@MyProfileActivity, SignInActivity::class.java))
+
+                val hashMap: HashMap<String, String> = HashMap()
+                hashMap.put("fcmToken", "")
+                databaseRef.updateChildren(hashMap as Map<String, Any>)
+
+                val intent = Intent(this@MyProfileActivity, SignInActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
                 finish()
                 Toast.makeText(this, "Signed Out...", Toast.LENGTH_SHORT).show()
             }

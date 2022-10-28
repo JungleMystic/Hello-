@@ -60,12 +60,9 @@ class SignInFragment : Fragment() {
                             // Get new FCM registration token
                             val token = it.result
 
-                            val hashMap: HashMap<String, String> = HashMap()
-                            hashMap.put("fcmToken", token!!)
-
                             databaseRef = FirebaseDatabase.getInstance().getReference("user").child(auth.currentUser?.uid!!)
 
-                            databaseRef.updateChildren(hashMap as Map<String, Any>)
+                            databaseRef.child("fcmToken").setValue(token)
 
                         })
 

@@ -18,5 +18,6 @@
     <color name="received_message_background">#4F7DE3</color>
     <color name="sent_text_color">#324e64</color>
     <color name="blackNwhite">#FFFFFFFF</color>
+    <color name="onlineStatus">#54eb72</color>
 
 </resources>

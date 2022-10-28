@@ -23,5 +23,8 @@
     <string name="save">Save</string>
     <string name="sender_name">Sender Name</string>
     <string name="message">Message</string>
+    <string name="currentDate_hint">currentDate</string>
+    <string name="currentTime_hint">currentTime</string>
+    <string name="online_hint">Online</string>
 
 </resources>

@@ -20,14 +20,20 @@ import com.lrm.hello.ScrollToBottom
 import com.lrm.hello.databinding.ActivityChatBinding
 import retrofit2.Call
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatActivity : AppCompatActivity() {
+
+    val lastseenDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+    val lastseenTime: String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var chatList: ArrayList<Chat>
     private lateinit var databaseRef: DatabaseReference
+    private lateinit var databaseRef2: DatabaseReference
     private lateinit var user: FirebaseUser
     private lateinit var manager: LinearLayoutManager
 
@@ -57,12 +63,19 @@ class ChatActivity : AppCompatActivity() {
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("user").child(userId!!)
+        databaseRef2 = FirebaseDatabase.getInstance().getReference("user").child(user.uid)
 
         databaseRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(UserDetails::class.java)
 
                 binding.chatProfileName.text = user!!.name
+
+                if (user.onlineStatus == "Online") {
+                    binding.onlineStatus.text = user.onlineStatus
+                } else if (user.onlineStatus == "Offline") {
+                    binding.onlineStatus.text = "last seen ${user.lastseenDate} at ${user.lastseenTime}"
+                }
 
                 if (user.profilePic == "") {
                     binding.chatUserProfilePic.setImageResource(R.drawable.profile_icon)
@@ -96,12 +109,17 @@ class ChatActivity : AppCompatActivity() {
 
     private fun sendMessage(senderId: String, receiverId: String, message: String) {
 
+        val currentDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+        val currentTime: String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+
         val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference()
 
         val hashMap: HashMap<String, String> = HashMap()
         hashMap.put("senderId", senderId)
         hashMap.put("receiverId", receiverId)
         hashMap.put("message", message)
+        hashMap.put("currentDate", currentDate)
+        hashMap.put("currentTime", currentTime)
 
         reference.child("chat").push().setValue(hashMap)
 
@@ -187,5 +205,24 @@ class ChatActivity : AppCompatActivity() {
                 }
 
             })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val hashMap: HashMap<String, String> = HashMap()
+        hashMap.put("onlineStatus", "Online")
+        databaseRef2.updateChildren(hashMap as Map<String, Any>)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val hashMap: HashMap<String, String> = HashMap()
+        hashMap.put("onlineStatus", "Offline")
+        hashMap.put("lastseenDate", lastseenDate)
+        hashMap.put("lastseenTime", lastseenTime)
+
+        databaseRef2.updateChildren(hashMap as Map<String, Any>)
     }
 }

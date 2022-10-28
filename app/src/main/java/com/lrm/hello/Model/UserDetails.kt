@@ -7,5 +7,7 @@ data class UserDetails(
     var profilePic: String = "",
     var fcmToken: String = "",
     var typingStatus: String = "",
-    var onlineStatus: String = ""
+    var onlineStatus: String = "",
+    var lastseenDate: String = "",
+    var lastseenTime: String = ""
 )

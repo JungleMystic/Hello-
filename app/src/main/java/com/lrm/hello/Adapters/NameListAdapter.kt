@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,13 @@ class NameListAdapter(val context: Context, val userList: ArrayList<UserDetails>
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = userList[position]
         holder.nameText.text = user.name
+
+        if (user.onlineStatus == "Online") {
+            holder.onlineStatusIcon.visibility = View.VISIBLE
+        } else if (user.onlineStatus == "Offline") {
+            holder.onlineStatusIcon.visibility = View.GONE
+        }
+
         Glide.with(context).load(user.profilePic).placeholder(R.drawable.profile_icon).into(holder.profilePic)
 
         holder.user_layout.setOnClickListener {
@@ -46,5 +54,6 @@ class NameListAdapter(val context: Context, val userList: ArrayList<UserDetails>
         val nameText = view.findViewById<TextView>(R.id.name_text)
         val profilePic = view.findViewById<CircleImageView>(R.id.user_profilePic)
         val user_layout: ConstraintLayout = view.findViewById(R.id.name_list_layout)
+        val onlineStatusIcon = view.findViewById<ImageView>(R.id.onlineStatusIcon)
     }
 }

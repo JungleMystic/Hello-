@@ -18,8 +18,13 @@ import com.google.firebase.storage.FirebaseStorage
 import com.lrm.hello.Model.UserDetails
 import com.lrm.hello.R
 import com.lrm.hello.databinding.ActivityMyProfileBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MyProfileActivity : AppCompatActivity() {
+
+    val lastseenDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+    val lastseenTime: String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
 
     private lateinit var user: FirebaseUser
     private lateinit var auth: FirebaseAuth
@@ -126,7 +131,7 @@ class MyProfileActivity : AppCompatActivity() {
                 val intent = Intent(this@MyProfileActivity, SignInActivity::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
-                finish()
+                finishAffinity()
                 Toast.makeText(this, "Signed Out...", Toast.LENGTH_SHORT).show()
             }
             .show()
@@ -166,5 +171,24 @@ class MyProfileActivity : AppCompatActivity() {
 
         databaseRef.updateChildren(hashMap as Map<String, Any>)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val hashMap: HashMap<String, String> = HashMap()
+        hashMap.put("onlineStatus", "Online")
+        databaseRef.updateChildren(hashMap as Map<String, Any>)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val hashMap: HashMap<String, String> = HashMap()
+        hashMap.put("onlineStatus", "Offline")
+        hashMap.put("lastseenDate", lastseenDate)
+        hashMap.put("lastseenTime", lastseenTime)
+
+        databaseRef.updateChildren(hashMap as Map<String, Any>)
     }
 }

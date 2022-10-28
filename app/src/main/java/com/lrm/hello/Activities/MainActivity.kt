@@ -18,6 +18,8 @@ import com.lrm.hello.Adapters.NameListAdapter
 import com.lrm.hello.Model.UserDetails
 import com.lrm.hello.R
 import com.lrm.hello.databinding.ActivityMainBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,12 +32,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var databaseRef: DatabaseReference
     private lateinit var databaseRef2: DatabaseReference
 
+    val lastseenDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+    val lastseenTime: String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         binding.mainMyProfilePic.setOnClickListener {
             startActivity(Intent(this@MainActivity, MyProfileActivity::class.java))
@@ -92,5 +96,24 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val hashMap: HashMap<String, String> = HashMap()
+        hashMap.put("onlineStatus", "Online")
+        databaseRef2.updateChildren(hashMap as Map<String, Any>)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val hashMap: HashMap<String, String> = HashMap()
+        hashMap.put("onlineStatus", "Offline")
+        hashMap.put("lastseenDate", lastseenDate)
+        hashMap.put("lastseenTime", lastseenTime)
+
+        databaseRef2.updateChildren(hashMap as Map<String, Any>)
     }
 }

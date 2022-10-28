@@ -15,7 +15,9 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp"
-        android:layout_margin="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
         android:layout_alignParentEnd="true"
         app:cardBackgroundColor="@color/sent_message_background">
 
@@ -31,5 +33,38 @@
             android:gravity="center_vertical"
             android:textColor="@color/sent_text_color"/>
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="3dp"
+        android:layout_below="@id/message_sent_card"
+        android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/currentTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/currentTime_hint"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:textSize="10sp"
+        android:textColor="@color/blackNwhite"
+        android:gravity="end"/>
+
+    <TextView
+        android:id="@+id/currentDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/currentDate_hint"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:textSize="10sp"
+        android:textColor="@color/blackNwhite"
+        android:gravity="end"
+        android:layout_marginEnd="5dp"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

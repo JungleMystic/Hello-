@@ -15,8 +15,8 @@ import com.lrm.hello.R
 class ChatAdapter(val context: Context, val chatList: ArrayList<Chat>):
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
-    val RECEIVED_MESSAGE = 1
-    val SENT_MESSAGE = 2
+    val RECEIVED_MESSAGE = 0
+    val SENT_MESSAGE = 1
 
     lateinit var user: FirebaseUser
 
@@ -36,6 +36,9 @@ class ChatAdapter(val context: Context, val chatList: ArrayList<Chat>):
 
         val currentMessage = chatList[position]
         holder.messageText.text = currentMessage.message
+
+        holder.currentDate.text = currentMessage.currentDate
+        holder.currentTime.text = currentMessage.currentTime
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -55,5 +58,7 @@ class ChatAdapter(val context: Context, val chatList: ArrayList<Chat>):
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val messageText: TextView = view.findViewById(R.id.message_text)
+        val currentDate: TextView = view.findViewById(R.id.currentDate)
+        val currentTime: TextView = view.findViewById(R.id.currentTime)
     }
 }

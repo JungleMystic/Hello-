@@ -30,8 +30,8 @@
 
             <ImageView
                 android:id="@+id/back_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="15dp"
                 android:src="@drawable/ic_back_button"
                 app:tint="@color/blackNwhite"
@@ -42,9 +42,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/chat_user_profilePic"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="15dp"
                 app:layout_constraintHorizontal_bias="0.10"
                 app:civ_border_width="1dp"
@@ -53,20 +53,38 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/back_button"/>
 
-            <TextView
-                android:id="@+id/chatProfileName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="110dp"
-                android:layout_marginEnd="65dp"
-                android:text="@string/app_name"
-                android:paddingBottom="7dp"
-                android:fontFamily="@font/app_name_font"
-                android:textColor="@color/text_color"
-                android:textSize="22sp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/chat_user_profilePic"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/chatProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/your_name_hint"
+                android:paddingEnd="4dp"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold|italic"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/onlineStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                tools:text="@string/online_hint"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/blackNwhite"
+                android:textSize="12sp"/>
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -78,10 +96,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="65dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@id/appbar"
         app:layout_constraintStart_toStartOf="parent"

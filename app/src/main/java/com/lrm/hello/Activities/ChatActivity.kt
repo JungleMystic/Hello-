@@ -26,7 +26,7 @@ import java.util.*
 class ChatActivity : AppCompatActivity() {
 
     val lastseenDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-    val lastseenTime: String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+    val lastseenTime: String = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var chatRecyclerView: RecyclerView
@@ -110,7 +110,7 @@ class ChatActivity : AppCompatActivity() {
     private fun sendMessage(senderId: String, receiverId: String, message: String) {
 
         val currentDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        val currentTime: String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+        val currentTime: String = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
 
         val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference()
 

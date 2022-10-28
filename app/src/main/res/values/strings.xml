@@ -26,5 +26,8 @@
     <string name="currentDate_hint">currentDate</string>
     <string name="currentTime_hint">currentTime</string>
     <string name="online_hint">Online</string>
+    <string name="delete_for_everyone">Delete for everyone</string>
+    <string name="delete_question">Do you want to delete a message…?</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

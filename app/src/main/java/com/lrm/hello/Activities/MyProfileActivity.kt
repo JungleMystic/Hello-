@@ -24,7 +24,7 @@ import java.util.*
 class MyProfileActivity : AppCompatActivity() {
 
     val lastseenDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-    val lastseenTime: String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+    val lastseenTime: String = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
 
     private lateinit var user: FirebaseUser
     private lateinit var auth: FirebaseAuth

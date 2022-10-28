@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/delete_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/delete_question"
+        android:textSize="16sp"
+        android:textStyle="bold|normal"
+        android:textColor="@color/blackNwhite"/>
+
+    <TextView
+        android:id="@+id/delete_for_everyone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/delete_for_everyone"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
+        android:textStyle="bold|normal"
+        android:textColor="@color/delete_text_color"/>
+
+    <TextView
+        android:id="@+id/cancel_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/cancel"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
+        android:textStyle="bold|normal"
+        android:textColor="@color/blackNwhite"/>
+
+
+</LinearLayout>

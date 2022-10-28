@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var databaseRef2: DatabaseReference
 
     val lastseenDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-    val lastseenTime: String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+    val lastseenTime: String = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

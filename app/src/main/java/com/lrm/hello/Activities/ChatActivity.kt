@@ -1,6 +1,10 @@
 package com.lrm.hello.Activities
 
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 import com.lrm.hello.Adapters.ChatAdapter
 import com.lrm.hello.ApiUitlities
 import com.lrm.hello.Model.Chat
@@ -36,6 +41,14 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var databaseRef2: DatabaseReference
     private lateinit var user: FirebaseUser
     private lateinit var manager: LinearLayoutManager
+    private lateinit var storage: FirebaseStorage
+    private lateinit var imageUri: Uri
+
+    /*
+    private val selectedImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        imageUri = it!!
+    }
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +65,8 @@ class ChatActivity : AppCompatActivity() {
         user = FirebaseAuth.getInstance().currentUser!!
 
         databaseRef = FirebaseDatabase.getInstance().getReference()
+
+        storage = FirebaseStorage.getInstance()
 
         val intent = getIntent()
         //val userName = intent.getStringExtra("name")
@@ -71,16 +86,22 @@ class ChatActivity : AppCompatActivity() {
 
                 binding.chatProfileName.text = user!!.name
 
+                if (user.profilePic == "") {
+                    binding.chatUserProfilePic.setImageResource(R.drawable.profile_icon)
+                } else {
+                    Glide.with(this@ChatActivity).load(user.profilePic).into(binding.chatUserProfilePic)
+                }
+
                 if (user.onlineStatus == "Online") {
                     binding.onlineStatus.text = user.onlineStatus
                 } else if (user.onlineStatus == "Offline") {
                     binding.onlineStatus.text = "last seen ${user.lastseenDate} at ${user.lastseenTime}"
                 }
 
-                if (user.profilePic == "") {
-                    binding.chatUserProfilePic.setImageResource(R.drawable.profile_icon)
+                if (user.typingStatus == "typing...") {
+                    binding.typingStatus.text = user.typingStatus
                 } else {
-                    Glide.with(this@ChatActivity).load(user.profilePic).into(binding.chatUserProfilePic)
+                    binding.typingStatus.text = ""
                 }
             }
 
@@ -90,9 +111,71 @@ class ChatActivity : AppCompatActivity() {
 
         })
 
+
+        /*binding.sendAttachment.setOnClickListener {
+            selectedImage.launch("image/*")
+        }*/
+
+         */
+
+
+        val handler = Handler()
+        binding.messageBox.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+
+                val hashMap: HashMap<String, String> = HashMap()
+                hashMap.put("typingStatus", "typing...")
+                databaseRef2.updateChildren(hashMap as Map<String, Any>)
+
+                handler.removeCallbacksAndMessages(null)
+                handler.postDelayed(userStoppedTyping, 1000)
+            }
+
+            var userStoppedTyping = Runnable {
+                val hashMap: HashMap<String, String> = HashMap()
+                hashMap.put("typingStatus", "")
+                databaseRef2.updateChildren(hashMap as Map<String, Any>)
+            }
+        })
+
         binding.sendButton.setOnClickListener {
 
+            /*val storageRef = FirebaseStorage.getInstance().getReference("chats")
+                .child(user.uid)
+                .child("imageMessage")
+
+            storageRef.putFile(imageUri).addOnCompleteListener {
+                storageRef.downloadUrl.addOnSuccessListener { image ->
+                    val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference()
+
+                    val hashMap: HashMap<String, String> = HashMap()
+                    hashMap.put("imageUrl", image.toString())
+                    reference.child("chat").push().setValue(hashMap)
+
+                } .addOnFailureListener {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
+            } .addOnFailureListener {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            }
+
+             */
+
             val message: String = binding.messageBox.text.toString()
+
+            /*val imageMessage: String = imageUri.toString()
+
+            if (imageMessage == "") {
+                message = binding.messageBox.text.toString()
+            } else {
+                message = "photo"
+            }
+
+             */
 
             if (message.isNotEmpty()) {
                 sendMessage(user.uid, userId, message)

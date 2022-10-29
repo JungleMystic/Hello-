@@ -88,6 +88,7 @@ class SignUpFragment : Fragment() {
             hashMap.put("onlineStatus", token!!)
             hashMap.put("lastseenDate", "")
             hashMap.put("lastseenTime", "")
+            hashMap.put("typingStatus", "")
 
             databaseRef = FirebaseDatabase.getInstance().getReference("user").child(auth.currentUser?.uid!!)
 

@@ -48,12 +48,13 @@
                 android:layout_marginStart="15dp"
                 app:layout_constraintHorizontal_bias="0.10"
                 app:civ_border_width="1dp"
-                android:src="@drawable/ic_profile"
+                android:src="@drawable/profile_icon"
                 app:civ_circle_background_color="@color/light_grey"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/back_button"/>
 
             <LinearLayout
+                android:id="@+id/chatInfoLL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -85,6 +86,20 @@
                 android:textSize="12sp"/>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/typing_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:layout_marginStart="5dp"
+                tools:text="@string/typing"
+                android:textStyle="italic"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/blackNwhite"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/chatInfoLL"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

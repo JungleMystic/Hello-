@@ -54,11 +54,11 @@ class ChatAdapter(val context: Context, val chatList: ArrayList<Chat>):
                 .setView(binding.root)
                 .create()
 
-            /*binding.deleteForEveryone.setOnClickListener {
+            /*
+            binding.deleteForEveryone.setOnClickListener {
                 currentMessage.message = "This message is deleted."
                 FirebaseDatabase.getInstance().getReference("chat").child(user.uid).setValue(currentMessage)
             }
-
              */
 
             binding.cancelDelete.setOnClickListener { dialog.dismiss() }

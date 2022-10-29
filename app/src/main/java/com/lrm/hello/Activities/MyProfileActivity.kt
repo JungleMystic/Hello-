@@ -126,12 +126,13 @@ class MyProfileActivity : AppCompatActivity() {
 
                 val hashMap: HashMap<String, String> = HashMap()
                 hashMap.put("fcmToken", "")
+                hashMap.put("onlineStatus", "")
                 databaseRef.updateChildren(hashMap as Map<String, Any>)
 
                 val intent = Intent(this@MyProfileActivity, SignInActivity::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
-                finishAffinity()
+                finish()
                 Toast.makeText(this, "Signed Out...", Toast.LENGTH_SHORT).show()
             }
             .show()

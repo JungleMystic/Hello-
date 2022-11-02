@@ -122,15 +122,15 @@ class MyProfileActivity : AppCompatActivity() {
             .setMessage(getString(R.string.signout_question))
             .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                auth.signOut()
 
                 val hashMap: HashMap<String, String> = HashMap()
                 hashMap.put("fcmToken", "")
                 hashMap.put("onlineStatus", "")
                 databaseRef.updateChildren(hashMap as Map<String, Any>)
 
+                auth.signOut()
+
                 val intent = Intent(this@MyProfileActivity, SignInActivity::class.java)
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
                 finish()
                 Toast.makeText(this, "Signed Out...", Toast.LENGTH_SHORT).show()
@@ -144,7 +144,7 @@ class MyProfileActivity : AppCompatActivity() {
             .child(user.uid)
             .child("profile.jpg")
 
-        storageRef.putFile(imageUri!!)
+        storageRef.putFile(imageUri)
             .addOnCompleteListener{
                 storageRef.downloadUrl.addOnSuccessListener {
                     storeData(it)

@@ -41,9 +41,11 @@ class ChatAdapter(val context: Context, val chatList: ArrayList<Chat>):
         val currentMessage = chatList[position]
         holder.messageText.text = currentMessage.message
 
-        if(currentMessage.message.equals("photo")) {
+        if(currentMessage.messageType.equals("photo")) {
             holder.imageHolder.visibility = View.VISIBLE
-            Glide.with(context).load(currentMessage.imageUrl).placeholder(R.drawable.image_placeholder).into(holder.imageHolder)
+            Glide.with(context).load(currentMessage.imageUri).placeholder(R.drawable.image_placeholder).into(holder.imageHolder)
+        } else {
+            holder.imageHolder.visibility = View.GONE
         }
 
         holder.itemView.setOnLongClickListener {

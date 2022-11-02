@@ -94,7 +94,9 @@ class SignUpFragment : Fragment() {
 
             databaseRef.setValue(hashMap).addOnCompleteListener() {
                 if (it.isSuccessful) {
-                    startActivity(Intent(this@SignUpFragment.requireContext(), MainActivity::class.java))
+                    val intent = Intent(this@SignUpFragment.requireContext(), MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
                     Toast.makeText(context, "Account has been created", Toast.LENGTH_SHORT).show()
                 }
             }

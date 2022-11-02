@@ -6,6 +6,7 @@ import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,11 +45,11 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var storage: FirebaseStorage
     private lateinit var imageUri: Uri
 
-    /*
+    var imageMessageLink = ""
+
     private val selectedImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
         imageUri = it!!
     }
-    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,12 +113,9 @@ class ChatActivity : AppCompatActivity() {
         })
 
 
-        /*binding.sendAttachment.setOnClickListener {
+        binding.sendAttachment.setOnClickListener {
             selectedImage.launch("image/*")
-        }*/
-
-         */
-
+        }
 
         val handler = Handler()
         binding.messageBox.addTextChangedListener(object: TextWatcher {
@@ -144,18 +142,13 @@ class ChatActivity : AppCompatActivity() {
 
         binding.sendButton.setOnClickListener {
 
-            /*val storageRef = FirebaseStorage.getInstance().getReference("chats")
-                .child(user.uid)
-                .child("imageMessage")
+            /*val fileName = UUID.randomUUID().toString()
+            val storageRef = FirebaseStorage.getInstance().getReference("chats")
+                .child("/images/$fileName")
 
             storageRef.putFile(imageUri).addOnCompleteListener {
-                storageRef.downloadUrl.addOnSuccessListener { image ->
-                    val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference()
-
-                    val hashMap: HashMap<String, String> = HashMap()
-                    hashMap.put("imageUrl", image.toString())
-                    reference.child("chat").push().setValue(hashMap)
-
+                storageRef.downloadUrl.addOnSuccessListener {
+                    imageMessageLink = it.toString()
                 } .addOnFailureListener {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 }
@@ -167,30 +160,35 @@ class ChatActivity : AppCompatActivity() {
 
             val message: String = binding.messageBox.text.toString()
 
-            /*val imageMessage: String = imageUri.toString()
+            /*var imageMessage: String = imageUri.toString()
+            var messageType: String = ""
 
             if (imageMessage == "") {
-                message = binding.messageBox.text.toString()
+                messageType = "Text"
             } else {
-                message = "photo"
+                messageType = "photo"
             }
+
+            sendMessage(user.uid, userId, message, messageType, imageMessageLink)
+            imageMessage = ""
 
              */
 
             if (message.isNotEmpty()) {
-                sendMessage(user.uid, userId, message)
+                sendMessage(user.uid, userId, message /*, messageType, imageMessageLink*/)
                 binding.messageBox.setText("")
 
             } else {
                 Toast.makeText(applicationContext, "Your message is empty.", Toast.LENGTH_SHORT).show()
                 binding.messageBox.setText("")
             }
+
         }
 
         readMessage(user.uid, userId)
     }
 
-    private fun sendMessage(senderId: String, receiverId: String, message: String) {
+    private fun sendMessage(senderId: String, receiverId: String, message: String /*, messageType: String, imageMessage: String*/) {
 
         val currentDate: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         val currentTime: String = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
@@ -201,6 +199,8 @@ class ChatActivity : AppCompatActivity() {
         hashMap.put("senderId", senderId)
         hashMap.put("receiverId", receiverId)
         hashMap.put("message", message)
+        //hashMap.put("messageType", messageType)
+        //hashMap.put("imageUri", imageMessage)
         hashMap.put("currentDate", currentDate)
         hashMap.put("currentTime", currentTime)
 

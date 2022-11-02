@@ -67,6 +67,7 @@ class SignInFragment : Fragment() {
                         })
 
                         val intent = Intent(this@SignInFragment.requireContext(), MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                         Toast.makeText(context, "Signed in Successfully...", Toast.LENGTH_SHORT).show()
                     }
